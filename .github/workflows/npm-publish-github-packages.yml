@@ -1,6 +1,6 @@
 name: CI
 on: workflow_dispatch
-
+permissions: write-all
 jobs:
   build:
     name: Build
@@ -43,7 +43,7 @@ jobs:
           asset_path: ./build/app.zip
           asset_name: Exilium-Recruit-Export.zip
           asset_content_type: application/zip
-          
+
       - name: Deploy update
         if: success()
         uses: crazy-max/ghaction-github-pages@v2
