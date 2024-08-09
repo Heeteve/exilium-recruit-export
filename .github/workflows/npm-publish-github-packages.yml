@@ -31,6 +31,7 @@ jobs:
           release_name: Release ${{ github.ref }}
           draft: false
           prerelease: false
+
       - name: Upload Release Asset
         if: success()
         id: upload-release-asset
@@ -42,6 +43,7 @@ jobs:
           asset_path: ./build/app.zip
           asset_name: Exilium-Recruit-Export.zip
           asset_content_type: application/zip
+          
       - name: Deploy update
         if: success()
         uses: crazy-max/ghaction-github-pages@v2
