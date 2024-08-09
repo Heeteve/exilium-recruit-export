@@ -1,5 +1,5 @@
 name: CI
-on: [push]
+on: workflow_dispatch
 
 jobs:
   build:
@@ -13,13 +13,15 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 16
+          cache: 'npm'
+          cache-dependency-path: subdir/package-lock.json
           
       - name: Run build
         run: |
           yarn --frozen-lockfile
           yarn build:win64
           yarn build-update
-          
+
       - name: Create Release
         if: success()
         id: create_release
