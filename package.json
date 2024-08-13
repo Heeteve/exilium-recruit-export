@@ -62,11 +62,12 @@
     },
     "win": {
       "icon": "build/icons/icon.ico",
-      "target": "zip"
+      "target": "zip",
+      "artifactName": "${productName}-v${version}-${os}.zip"
     },
     "linux": {
-      "target": "deb",
-      "icon": "build/icons"
+      "icon": "build/icons",
+      "target": "deb"
     }
   },
   "dependencies": {

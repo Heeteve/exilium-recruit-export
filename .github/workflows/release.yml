@@ -1,8 +1,7 @@
 on:
   push:
-    # Sequence of patterns matched aga` refs/tags
     tags:
-      - '*.*.*' # i.e. 0.0.1, 20.15.10
+      - 'v*.*' # Push events to matching v*.*, i.e. v1.0, v20.15.10
 name: Upload Release Asset
 
 jobs:
@@ -12,15 +11,18 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-      - name: Use Node.js
+
+      - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: 16
+
       - name: Build App
         run: |
           yarn --frozen-lockfile
           yarn build:win64
           yarn build-update
+
       - name: Create Release
         if: success()
         id: create_release
@@ -32,14 +34,15 @@ jobs:
           release_name: Release ${{ github.ref }}
           draft: false
           prerelease: false
+
       - name: Upload Release Asset
         if: success()
-        id: upload-release-asset
+        id: upload_release_asset
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps
-          asset_path: "./build/Exilium Recruit Export-${{ github.ref_name }}-win.zip"
-          asset_name: "Exilium Recruit Export-${{ github.ref_name }}-win.zip"
+          asset_path: "./build/Exilium Recruit Export-v${{ github.ref_name }}-win.zip"
+          asset_name: "Exilium Recruit Export-v${{ github.ref_name }}-win.zip"
           asset_content_type: application/zip
